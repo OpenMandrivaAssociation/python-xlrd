@@ -1,44 +1,58 @@
 %define module	xlrd
-%define name  	python-%{module}
-%define version 0.8.0
-%define release 1
 
 Summary:	Module for extracting data from MS Excel spreadsheets in Python
-Name:		%{name}
-Version:	%{version}
-Release:	%{release}
+
+Name:		python-%{module}
+Version:	0.9.2
+Release:	1
 Source0:	http://pypi.python.org/packages/source/x/%{module}/%{module}-%{version}.tar.gz
-Source1:	runxlrd.py
 License:	BSD 
 Group:		Development/Python 
 Url:		http://pypi.python.org/pypi/xlrd/
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildArch:	noarch
-%py_requires -d
+BuildRequires:	python-setuptools
+BuildRequires:	python-devel
+BuildRequires:	dos2unix
+
+BuildRequires:  python-devel
 
 %description
-Extract data from new and old Excel spreadsheets on any platform. Pure
-Python (2.1 to 2.6). Strong support for Excel dates. Unicode-aware.
+Extract data from new and old Excel spreadsheets on any platform. 
+Pure Python. Strong support for Excel dates. Unicode-aware.
 
 %prep
 %setup -q -n %{module}-%{version}
+for i in */*.py *.html xlrd/doc/* xlrd/examples/*; do
+  # fix missing files
+  dos2unix $i || :
+done
+for i in xlrd/doc/* xlrd/examples/xlrdnameAPIdemo.py; do
+  iconv -f iso8859-1 -t UTF-8 $i > $i.tmp
+  mv -f $i.tmp $i
+done
+
+%build
+python setup.py build
 
 %install
-%__rm -rf %{buildroot}
-PYTHONDONTWRITEBYTECODE= %__python setup.py install --root=%{buildroot}
-%__mv %{buildroot}%{py_sitedir}/xlrd/doc/* .
-%__cp -f %{SOURCE1} %{buildroot}%{_bindir}
-%__chmod 755 %{buildroot}%{_bindir}/runxlrd*
-%__rm -rf %{buildroot}%{py_sitedir}/xlrd/doc/
-%__mv %{buildroot}%{py_sitedir}/xlrd/examples .
-%__mv %{buildroot}%{_bindir}/runxlrd.py %{buildroot}%{_bindir}/runxlrd
+python setup.py install -O1 --skip-build --root %{buildroot}
 
-%clean
-%__rm -rf %{buildroot}
+# fix linting, add shebang,fix extentions in _bindir
+(
+  echo '#!%{__python}'
+  cat %{buildroot}%{_bindir}/runxlrd.py
+) >> %{buildroot}%{_bindir}/runxlrd
+rm -rf %{buildroot}%{_bindir}/runxlrd.py* \
+  %{buildroot}/%{py_puresitedir}/xlrd/doc \
+  %{buildroot}/%{py_puresitedir}/xlrd/examples 
+
 
 %files
-%defattr(-,root,root)
-%doc *.html examples 
-%_bindir/runxlrd
-%py_sitedir/xlrd*
+# file attr fixed here
+%doc xlrd/doc/* xlrd/examples
+%attr(755,root,root) %dir %{py_puresitedir}/xlrd
+%{py_puresitedir}/xlrd/*
+%{py_puresitedir}/*egg-info
+%attr(755,root,root) %{_bindir}/*
+
 

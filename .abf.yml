@@ -1,3 +1,2 @@
 sources:
-  "runxlrd.py:"	ebe59fd6cffd095f8b01086c62ac9af8e4318cee
-  "xlrd-0.8.0.tar.gz:"	5045e8ec5916029a5483bd0e1376f5b6288c24d7
+  xlrd-0.9.2.tar.gz: dbc1d49871f342df128cf382679db459dfee4d01
