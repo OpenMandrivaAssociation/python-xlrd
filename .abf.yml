@@ -1,2 +1,4 @@
-sources:
+removed_sources:
   xlrd-0.9.2.tar.gz: dbc1d49871f342df128cf382679db459dfee4d01
+sources:
+  xlrd-0.9.3.tar.gz: 1970c6a0a4ff7582e8c80b5b1efdc725de215113

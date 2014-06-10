@@ -2,10 +2,11 @@
 
 Summary:	Module for extracting data from MS Excel spreadsheets in Python
 
+
 Name:		python-%{module}
-Version:	0.9.2
+Version:	0.9.3
 Release:	1
-Source0:	http://pypi.python.org/packages/source/x/%{module}/%{module}-%{version}.tar.gz
+Source0:	http://pypi.python.org/packages/source/x/xlrd/xlrd-%{version}.tar.gz
 License:	BSD 
 Group:		Development/Python 
 Url:		http://pypi.python.org/pypi/xlrd/
@@ -22,13 +23,9 @@ Pure Python. Strong support for Excel dates. Unicode-aware.
 
 %prep
 %setup -q -n %{module}-%{version}
-for i in */*.py *.html xlrd/doc/* xlrd/examples/*; do
+for i in */*.py *.html; do
   # fix missing files
   dos2unix $i || :
-done
-for i in xlrd/doc/* xlrd/examples/xlrdnameAPIdemo.py; do
-  iconv -f iso8859-1 -t UTF-8 $i > $i.tmp
-  mv -f $i.tmp $i
 done
 
 %build
@@ -48,11 +45,10 @@ rm -rf %{buildroot}%{_bindir}/runxlrd.py* \
 
 
 %files
-# file attr fixed here
-%doc xlrd/doc/* xlrd/examples
 %attr(755,root,root) %dir %{py_puresitedir}/xlrd
 %{py_puresitedir}/xlrd/*
 %{py_puresitedir}/*egg-info
 %attr(755,root,root) %{_bindir}/*
+
 
 
