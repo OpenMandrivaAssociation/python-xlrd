@@ -4,18 +4,17 @@ Summary:	Module for extracting data from MS Excel spreadsheets in Python
 
 
 Name:		python-%{module}
-Version:	0.9.4
+Version:	2.0.1
 Release:	1
 Source0:	http://pypi.python.org/packages/source/x/xlrd/xlrd-%{version}.tar.gz
 License:	BSD 
 Group:		Development/Python 
 Url:		http://pypi.python.org/pypi/xlrd/
 BuildArch:	noarch
-BuildRequires:	python-setuptools
-BuildRequires:	python-devel
+BuildRequires:  pkgconfig(python)
+BuildRequires:  python3dist(nose)
+BuildRequires:  python3dist(setuptools)
 BuildRequires:	dos2unix
-
-BuildRequires:  python-devel
 
 %description
 Extract data from new and old Excel spreadsheets on any platform. 
@@ -49,6 +48,3 @@ rm -rf %{buildroot}%{_bindir}/runxlrd.py* \
 %{py_puresitedir}/xlrd/*
 %{py_puresitedir}/*egg-info
 %attr(755,root,root) %{_bindir}/*
-
-
-
