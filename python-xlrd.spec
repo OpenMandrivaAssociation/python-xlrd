@@ -5,7 +5,7 @@ Summary:	Module for extracting data from MS Excel spreadsheets in Python
 
 Name:		python-%{module}
 Version:	2.0.1
-Release:	1
+Release:	2
 Source0:	http://pypi.python.org/packages/source/x/xlrd/xlrd-%{version}.tar.gz
 License:	BSD 
 Group:		Development/Python 
