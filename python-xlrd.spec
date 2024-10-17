@@ -9,7 +9,7 @@ Release:	3
 Source0:	http://pypi.python.org/packages/source/x/xlrd/xlrd-%{version}.tar.gz
 License:	BSD 
 Group:		Development/Python 
-Url:		http://pypi.python.org/pypi/xlrd/
+Url:		https://pypi.python.org/pypi/xlrd/
 BuildArch:	noarch
 BuildRequires:  pkgconfig(python)
 BuildRequires:  python3dist(nose)
