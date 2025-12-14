@@ -1,50 +1,47 @@
 %define module	xlrd
 
-Summary:	Module for extracting data from MS Excel spreadsheets in Python
-
-
 Name:		python-%{module}
-Version:	2.0.1
-Release:	3
-Source0:	http://pypi.python.org/packages/source/x/xlrd/xlrd-%{version}.tar.gz
-License:	BSD 
-Group:		Development/Python 
-Url:		https://pypi.python.org/pypi/xlrd/
-BuildArch:	noarch
-BuildRequires:  pkgconfig(python)
-BuildRequires:  python3dist(nose)
-BuildRequires:  python3dist(setuptools)
+Version:	2.0.2
+Release:	1
+Summary:	Module for extracting data from MS Excel spreadsheets in Python
+License:	BSD
+Group:		Development/Python
+URL:		https://pypi.python.org/pypi/xlrd/
+Source0:	https://files.pythonhosted.org/packages/source/x/%{module}/%{module}-%{version}.tar.gz
+BuildSystem:		python
+BuildArch:			noarch
+
+BuildRequires:	pkgconfig
+BuildRequires:	pkgconfig(python)
+BuildRequires:	python%{pyver}dist(pip)
+BuildRequires:	python%{pyver}dist(setuptools)
+BuildRequires:	python%{pyver}dist(wheel)
 BuildRequires:	dos2unix
 
 %description
-Extract data from new and old Excel spreadsheets on any platform. 
-Pure Python. Strong support for Excel dates. Unicode-aware.
+a library for reading data and formatting information
+from Excel files in the historical .xls format.
 
 %prep
-%setup -q -n %{module}-%{version}
-for i in */*.py *.html; do
+%autosetup -n %{module}-%{version} -p1
+# Remove bundled egg-info
+rm -rf %{module}.egg-info
+
+for i in */*.py; do
   # fix missing files
   dos2unix $i || :
 done
 
 %build
-python setup.py build
+%py_build
 
 %install
-python setup.py install -O1 --skip-build --root %{buildroot}
-
-# fix linting, add shebang,fix extentions in _bindir
-(
-  echo '#!%{__python}'
-  cat %{buildroot}%{_bindir}/runxlrd.py
-) >> %{buildroot}%{_bindir}/runxlrd
-rm -rf %{buildroot}%{_bindir}/runxlrd.py* \
-  %{buildroot}/%{py_puresitedir}/xlrd/doc \
-  %{buildroot}/%{py_puresitedir}/xlrd/examples 
-
+%py_install
+mv -f %{buildroot}%{_bindir}/runxlrd.py %{buildroot}%{_bindir}/runxlrd
 
 %files
-%attr(755,root,root) %dir %{py_puresitedir}/xlrd
-%{py_puresitedir}/xlrd/*
-%{py_puresitedir}/*egg-info
-%attr(755,root,root) %{_bindir}/*
+%doc README.rst
+%license LICENSE
+%{_bindir}/run%{module}
+%{python_sitelib}/xlrd
+%{python_sitelib}/%{module}-%{version}*.*-info
