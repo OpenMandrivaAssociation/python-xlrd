@@ -2,7 +2,7 @@
 
 Name:		python-%{module}
 Version:	2.0.2
-Release:	1
+Release:	2
 Summary:	Module for extracting data from MS Excel spreadsheets in Python
 License:	BSD
 Group:		Development/Python
